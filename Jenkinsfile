@@ -39,12 +39,11 @@ pipeline {
                 -Dsonar.host.url=$SQHOST \
                 -Dsonar.login=$SQKEY"
         }
+        }
         timeout(time: 2, unit: 'MINUTES') {
           script {
             waitForQualityGate abortPipeline: true
           }
-        }
-        }
         }
       }   
       stage('Docker Build and Push') {
