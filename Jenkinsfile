@@ -31,10 +31,11 @@ pipeline {
       }
       stage('Sonarqube Static Code Analysis') {
         steps {
-          withCredentials([string(credentialsId: 'sq', variable: 'SQKEY'), string(credentialsId: 'SQPROJECT', variable: 'SQPROJECT')]) {
+          withCredentials([string(credentialsId: 'sq', variable: 'SQKEY'), string(credentialsId: 'SQPROJECT', variable: 'SQPROJECT'), string(credentialsId: 'SQHOST', variable: 'SQHOST')]) {
+              sh "printenv"
               sh "mvn clean verify sonar:sonar \
                 -Dsonar.projectKey=$SQPROJECT \
-                -Dsonar.host.url=http://devsecops.francecentral.cloudapp.azure.com:9000 \
+                -Dsonar.host.url=$SQHOST \
                 -Dsonar.login=$SQKEY"
         }
         }
