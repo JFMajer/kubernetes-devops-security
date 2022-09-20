@@ -16,7 +16,7 @@ spec:
         app: devsecops
     spec:
       containers:
-      - image: replace
+      - image: {{image}}
         name: devsecops-container
 ---
 apiVersion: v1
