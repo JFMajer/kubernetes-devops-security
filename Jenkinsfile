@@ -31,10 +31,12 @@ pipeline {
       }
       stage('Sonarqube Static Code Analysis') {
         steps {
-          sh "mvn clean verify sonar:sonar \
-            -Dsonar.projectKey=numeric-application \
-            -Dsonar.host.url=http://devsecops.francecentral.cloudapp.azure.com:9000 \
-            -Dsonar.login=sqp_c38e40addc0f35fa06a34fb71f1a54f2e6d9b5d3"
+          withCredentials([string(credentialsId: 'sq', variable: 'SQKEY')]) {
+              sh "mvn clean verify sonar:sonar \
+                -Dsonar.projectKey=numeric-application \
+                -Dsonar.host.url=http://devsecops.francecentral.cloudapp.azure.com:9000 \
+                -Dsonar.login=$SQKEY"
+        }
         }
       }   
       stage('Docker Build and Push') {
