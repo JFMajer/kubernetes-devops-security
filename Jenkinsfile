@@ -45,6 +45,9 @@ pipeline {
             },
             "Trivy Scan": {
               sh "bash trivy-scan.sh"
+            },
+            "OPA Conftest": {
+              sh "docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-docker-security.rego Dockerfile"
             }
           )
         }
@@ -72,7 +75,7 @@ pipeline {
         always {
               junit 'target/surefire-reports/*.xml'
               jacoco execPattern: 'target/jacoco.exec'
-              pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
+              pitmutation mutationStatsFile: 'target/pit-reports/**/mutations.xml'
               dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
         }
       }
