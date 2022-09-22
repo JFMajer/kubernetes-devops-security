@@ -20,8 +20,10 @@ spec:
       - image: {{image}}
         name: devsecops-container
         securityContext:
+          runAsNonRoot: true
           allowPrivilegeEscalation: false
-          runAsUser: 100
+          runAsUser: 10000
+          runAsGroup: 10000
         resources:
           requests:
             memory: "256Mi"
