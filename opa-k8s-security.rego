@@ -6,8 +6,4 @@ deny[res] {
 
   msg := "Containers must not run as root"
 
-  res := {
-    "msg": msg,
-    "title": "Runs as root user"
-  }
 }
