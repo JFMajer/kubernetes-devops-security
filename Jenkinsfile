@@ -1,6 +1,8 @@
 pipeline {
   agent any
 
+//environment variables definition
+
   environment {
     deploymentName = "devsecops"
     containerName = "devsecops-container"
@@ -11,22 +13,26 @@ pipeline {
   }
 
   stages {
+      //building application
       stage('Build Artifact') {
             steps {
               sh "mvn clean package -DskipTests=true"
               archive 'target/*.jar' //so that they can be downloaded later
             }
         }   
+      //unit tests
       stage('Unit test') {
             steps {
               sh "mvn test"
             }
         }
+      //mutation tests
       stage('Mutation Tests PIT') {
         steps {
           sh "mvn org.pitest:pitest-maven:mutationCoverage"
         }
       }
+      //sonarqube static analysis
       stage('Sonarqube Static Code Analysis') {
         steps {
           withSonarQubeEnv('SonarQube') {
@@ -45,7 +51,7 @@ pipeline {
         }
       }   
       }
-
+      //maven dependency scan, trivy base image scan, docker OPA conftest
       stage('Vulnerability Scan - Docker') {
         steps {
           parallel (
@@ -61,7 +67,7 @@ pipeline {
           )
         }
       }
-
+      //docker build and image push
       stage('Docker Build and Push') {
         steps {
           withDockerRegistry([credentialsId: "docker-hub", url: ""]) {
@@ -71,7 +77,7 @@ pipeline {
           }
         }
       }
-
+      //yaml deployment scan with conftest OPA and kubesec
       stage("k8s files scan") {
         steps {
           parallel(
@@ -80,12 +86,12 @@ pipeline {
               sh 'docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-k8s-security.rego k8s_deployment_service.yaml'
             },
             "Kubesec Scan": {
-              sh "bash kubesec.-scan.sh"
+              sh "bash kubesec-scan.sh"
             }
           )
         }
       }
-
+      //deployment to k8s cluster
       stage('Kubernetes deployment dev') {
         steps {
           withKubeConfig([credentialsId: 'kubeconfig']) {
@@ -93,6 +99,7 @@ pipeline {
           }
         }
       }
+      //script to check if deployment was succesfull
       stage('k8s deployment check') {
         steps {
           sh "bash k8s-deployment-rollout-status.sh"
