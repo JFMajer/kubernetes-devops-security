@@ -63,12 +63,12 @@ pipeline {
         }
       }
 
-      stage('Vulnerability scan - k8s deployment yaml') {
-        steps {
-          sh "sed -i 's|{{image}}|jakubmajer/numeric-app:${GIT_COMMIT}|g' k8s_deployment_service.yaml"
-          sh 'docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-k8s-security.rego k8s_deployment_service.yaml'
-        }
-      }
+      // stage('Vulnerability scan - k8s deployment yaml') {
+      //   steps {
+      //     sh "sed -i 's|{{image}}|jakubmajer/numeric-app:${GIT_COMMIT}|g' k8s_deployment_service.yaml"
+      //     sh 'docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-k8s-security.rego k8s_deployment_service.yaml'
+      //   }
+      // }
 
       stage('Kubernetes deployment dev') {
         steps {
