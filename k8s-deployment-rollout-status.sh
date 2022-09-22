@@ -4,7 +4,7 @@ sleep 15
 
 echo ${deploymentName}
 
-kubectl -n default rollout status deployment
+kubectl get all
 
 if [[ $(kubectl -n default rollout status deployment ${deploymentName} --timeout 5s) != *"successfully rolled out"* ]]; then
     echo "Deployment ${deploymentName} has failed"
