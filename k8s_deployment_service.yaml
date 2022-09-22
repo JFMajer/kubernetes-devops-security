@@ -19,6 +19,9 @@ spec:
       containers:
       - image: {{image}}
         name: devsecops-container
+        volumeMounts:
+        - mountPath: /tmp
+          name: temp-vol
         securityContext:
           runAsNonRoot: true
           allowPrivilegeEscalation: false
@@ -32,6 +35,9 @@ spec:
           limits:
             memory: "1Gi"
             cpu: "750m"
+      volumes:
+        - name: temp-vol
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
