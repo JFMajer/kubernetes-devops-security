@@ -20,7 +20,6 @@ spec:
       - image: {{image}}
         name: devsecops-container
         securityContext:
-          runAsNonRoot: true
           allowPrivilegeEscalation: false
           runAsUser: 100
         resources:
