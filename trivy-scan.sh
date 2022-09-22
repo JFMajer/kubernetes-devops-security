@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dockerImageName=$(aws 'NR==1 {print $2}' Dockerfile)
+dockerImageName=$(awk 'NR==1 {print $2}' Dockerfile)
 echo $dockerImageName
 
 docker run --rm -v docker run --rm -v $HOME/Library/Caches:/root/.cache aquasec/trivy -q image --exit-code 0 --severity HIGH --light $dockerImageName
