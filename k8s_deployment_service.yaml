@@ -15,6 +15,7 @@ spec:
       labels:
         app: devsecops
     spec:
+      serviceAccountName: default
       containers:
       - image: {{image}}
         name: devsecops-container
@@ -26,6 +27,9 @@ spec:
           requests:
             memory: "256Mi"
             cpu: "200m"
+          limits:
+            memory: "1Gi"
+            cpu: "750m"
 ---
 apiVersion: v1
 kind: Service
