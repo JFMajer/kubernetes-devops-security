@@ -21,6 +21,7 @@ spec:
         securityContext:
           runAsNonRoot: true
           allowPrivilegeEscalation: false
+          runAsUser: 100
         resources:
           requests:
             memory: "256Mi"
