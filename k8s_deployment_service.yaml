@@ -24,6 +24,7 @@ spec:
           allowPrivilegeEscalation: false
           runAsUser: 10000
           runAsGroup: 10000
+          readOnlyRootFilesystem: true
         resources:
           requests:
             memory: "256Mi"
