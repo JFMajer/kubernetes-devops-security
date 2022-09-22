@@ -3,8 +3,10 @@
 dockerImageName=$(awk 'NR==1 {print $2}' Dockerfile)
 echo $dockerImageName
 
-docker run --rm -v docker run --rm -v aquasec/trivy:0.32.0 -q image --exit-code 0 --severity HIGH --light $dockerImageName
-docker run --rm -v docker run --rm -v aquasec/trivy:0.32.0 -q image --exit-code 1 --severity CRITICAL --light $dockerImageName
+trivy image --severity HIGH --exit-code 0  $dockerImageName
+trivy image --severity CRITICAL --exit-code 1 $dockerImageName
+trivy image $dockerImageName
+
 
 exit_code=$?
 echo "Exit code: $exit_code"
