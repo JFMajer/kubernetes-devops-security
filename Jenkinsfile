@@ -77,6 +77,12 @@ pipeline {
           }
         }
       }
+      //trivy scan - application image
+      stage('Trivy scan - application docker image') {
+        steps {
+          sh "bash trivy-k8s-scan.sh"
+        }
+      }
       //yaml deployment scan with conftest OPA and kubesec
       stage("k8s files scan") {
         steps {
