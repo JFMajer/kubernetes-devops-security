@@ -6,6 +6,7 @@ echo ${deploymentName}
 
 var=$(kubectl get pods)
 echo $var
+kubectl -n default rollout status deployment ${deploymentName}
 
 if [[ $(kubectl -n default rollout status deployment ${deploymentName} --timeout 5s) != *"successfully rolled out"* ]]; then
     echo "Deployment ${deploymentName} has failed"
