@@ -1,6 +1,9 @@
 #!/bin/bash
 
 PORT=$(kubectl -n default get svc ${serviceName} -o json | jq .spec.ports[].nodePort)
+echo "$PORT"
+
+echo "${applicationURL}:${PORT}/v3/api-docs"
 
 chmod 777 $(pwd)
 echo $(id -u):$(id -g)
