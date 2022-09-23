@@ -108,7 +108,9 @@ pipeline {
       //script to check if deployment was succesfull
       stage('k8s deployment check') {
         steps {
-          sh "bash k8s-deployment-rollout-status.sh"
+          withKubeConfig([credentialsId: 'kubeconfig']) {
+            sh "bash k8s-deployment-rollout-status.sh"
+          }
         }
       }
     }
