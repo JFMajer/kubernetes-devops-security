@@ -139,7 +139,7 @@ pipeline {
       }
 
      //deployment to k8s cluster prod namespace
-      stage('Kubernetes deployment dev') {
+      stage('Kubernetes deployment prod') {
         steps {
           withKubeConfig([credentialsId: 'kubeconfig']) {
             sh "bash k8s-deployment-prod.sh"
