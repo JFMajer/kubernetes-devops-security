@@ -124,9 +124,18 @@ pipeline {
         }
       }
 
+      stage('Approve prod deployment') {
+        steps {
+          timeout(time: 2, unit: 'DAYS') {
+            input 'Approve prod deployment'
+          }
+        }
+      }
+
     }
       post {
         always {
+              sendNotification currentBuild.result
               publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'owasp-zap-report', reportFiles: 'zap_report.html', reportName: 'OWASP ZAP HTML Report', reportTitles: 'OWASP ZAP HTML Report', useWrapperFileDirectly: true])
               junit 'target/surefire-reports/*.xml'
               jacoco execPattern: 'target/jacoco.exec'
