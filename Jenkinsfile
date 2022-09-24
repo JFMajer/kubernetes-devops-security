@@ -60,7 +60,7 @@ pipeline {
             "Dependency Scan": {
               sh "mvn dependency-check:check"
             },
-            "Trivy Scan": {
+            "Aquasec Trivy Scan": {
               sh "bash trivy-scan.sh"
             },
             "OPA Conftest": {
@@ -80,13 +80,13 @@ pipeline {
         }
       }
       //trivy scan - application image
-      stage('Trivy scan - application docker image') {
+      stage('Aquasec Trivy scan - application docker image') {
         steps {
           sh "bash trivy-k8s-scan.sh"
         }
       }
       //yaml deployment scan with conftest OPA and kubesec
-      stage("k8s files scan") {
+      stage("k8s files security scans") {
         steps {
           parallel(
             "OPA Scan": {
@@ -121,6 +121,12 @@ pipeline {
           withKubeConfig([credentialsId: 'kubeconfig']) {
             sh "bash zap.sh"
           }
+        }
+      }
+
+      stage('Aquasec kubench test') {
+        steps {
+          sh "bash sudo ./kube-bench"
         }
       }
 
