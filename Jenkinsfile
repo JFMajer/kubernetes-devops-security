@@ -123,17 +123,26 @@ pipeline {
           }
         }
       }
-
-      stage('Aquasec kubench test') {
-        steps {
-          sh "bash kube-bench"
-        }
-      }
+      //doesn't work for now
+      // stage('Aquasec kubench test') {
+      //   steps {
+      //     sh "bash kube-bench"
+      //   }
+      // }
 
       stage('Approve prod deployment') {
         steps {
           timeout(time: 2, unit: 'DAYS') {
             input 'Approve prod deployment'
+          }
+        }
+      }
+
+     //deployment to k8s cluster prod namespace
+      stage('Kubernetes deployment dev') {
+        steps {
+          withKubeConfig([credentialsId: 'kubeconfig']) {
+            sh "bash k8s-deployment-prod.sh"
           }
         }
       }
