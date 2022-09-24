@@ -126,7 +126,7 @@ pipeline {
 
       stage('Aquasec kubench test') {
         steps {
-          sh "bash ./kube-bench"
+          sh "bash sudo kube-bench"
         }
       }
 
